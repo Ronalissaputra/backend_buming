@@ -1,43 +1,20 @@
 import Admin from "../models/AdminModel.js";
-import User from "../models/UserModel.js";
 import argon2 from "argon2";
 
-export const getUsers = async (req, res) => {
+export const getAdmin = async (req, res) => {
   try {
-    let response;
-    if (req.role === "admin1") {
-      response = await User.findAll({
-        attributes: ["uuid", "name", "email", "role"],
-        include: [
-          {
-            model: Admin,
-            attributes: ["name", "email"],
-          },
-        ],
-      });
-    } else {
-      response = await User.findAll({
-        attributes: ["uuid", "name", "email", "role"],
-        where: {
-          adminId: req.adminId,
-        },
-        include: [
-          {
-            model: Admin,
-            attributes: ["name", "email"],
-          },
-        ],
-      });
-    }
+    const response = await Admin.findAll({
+      attributes: ["uuid", "name", "email", "role"],
+    });
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 };
 
-export const getUserById = async (req, res) => {
+export const getAdminById = async (req, res) => {
   try {
-    const response = await User.findOne({
+    const response = await Admin.findOne({
       attributes: ["uuid", "name", "email", "role"],
       where: {
         uuid: req.params.id,
@@ -49,7 +26,7 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
+export const createAdmin = async (req, res) => {
   const { name, email, password, confPassword, role } = req.body;
   if (password !== confPassword)
     return res
@@ -57,12 +34,11 @@ export const createUser = async (req, res) => {
       .json({ msg: "Password dan Confirm Password tidak cocok" });
   const hashPassword = await argon2.hash(password);
   try {
-    await User.create({
+    await Admin.create({
       name: name,
       email: email,
       password: hashPassword,
       role: role,
-      adminId: req.adminId,
     });
     res.status(201).json({ msg: "Register Berhasil" });
   } catch (error) {
@@ -70,17 +46,17 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
-  const user = await User.findOne({
+export const updateAdmin = async (req, res) => {
+  const admin = await Admin.findOne({
     where: {
       uuid: req.params.id,
     },
   });
-  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+  if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
   const { name, email, password, confPassword, role } = req.body;
   let hashPassword;
   if (password === "" || password === null) {
-    hashPassword = user.password;
+    hashPassword = admin.password;
   } else {
     hashPassword = await argon2.hash(password);
   }
@@ -89,7 +65,7 @@ export const updateUser = async (req, res) => {
       .status(400)
       .json({ msg: "Password dan Confirm Password tidak cocok" });
   try {
-    await User.update(
+    await Admin.update(
       {
         name: name,
         email: email,
@@ -98,7 +74,7 @@ export const updateUser = async (req, res) => {
       },
       {
         where: {
-          id: user.id,
+          id: admin.id,
         },
       }
     );
@@ -108,17 +84,17 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
-  const user = await User.findOne({
+export const deleteAdmin = async (req, res) => {
+  const admin = await Admin.findOne({
     where: {
       uuid: req.params.id,
     },
   });
-  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+  if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
   try {
-    await User.destroy({
+    await Admin.destroy({
       where: {
-        id: user.id,
+        id: admin.id,
       },
     });
     res.status(200).json({ msg: "User Deleted" });

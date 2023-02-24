@@ -1,11 +1,10 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Admin from "./AdminModel.js";
 
 const { DataTypes } = Sequelize;
 
-const Users = db.define(
-  "user",
+const Admin = db.define(
+  "admin",
   {
     uuid: {
       type: DataTypes.STRING,
@@ -45,20 +44,10 @@ const Users = db.define(
         notEmpty: true,
       },
     },
-    adminId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
   },
   {
     freezeTableName: true,
   }
 );
 
-Admin.hasMany(Users);
-Users.belongsTo(Admin, { foreignKey: "adminId" });
-
-export default Users;
+export default Admin;
