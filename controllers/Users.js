@@ -5,7 +5,7 @@ import argon2 from "argon2";
 export const getUsers = async (req, res) => {
   try {
     let response;
-    if (req.role === "admin1") {
+    if (req.role === "superadmin") {
       response = await User.findAll({
         attributes: ["uuid", "name", "email", "role"],
         include: [
@@ -17,7 +17,7 @@ export const getUsers = async (req, res) => {
       });
     } else {
       response = await User.findAll({
-        attributes: ["uuid", "name", "email", "role"],
+        attributes: ["uuid", "nama", "email", "role"],
         where: {
           adminId: req.adminId,
         },
@@ -38,7 +38,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const response = await User.findOne({
-      attributes: ["uuid", "name", "email", "role"],
+      attributes: ["uuid", "nama", "email", "role"],
       where: {
         uuid: req.params.id,
       },
@@ -50,7 +50,25 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { name, email, password, confPassword, role } = req.body;
+  const {
+    nama,
+    nik,
+    umur,
+    lama_nikah,
+    suku,
+    agama,
+    pendidikan,
+    pekerjaan,
+    alamat,
+    no_hp,
+    gol_darah,
+    no_bpjs,
+    tempat_periksa,
+    email,
+    password,
+    confPassword,
+    role,
+  } = req.body;
   if (password !== confPassword)
     return res
       .status(400)
@@ -58,7 +76,19 @@ export const createUser = async (req, res) => {
   const hashPassword = await argon2.hash(password);
   try {
     await User.create({
-      name: name,
+      nama: nama,
+      nik: nik,
+      umur: umur,
+      lama_nikah: lama_nikah,
+      suku: suku,
+      agama: agama,
+      pendidikan: pendidikan,
+      pekerjaan: pekerjaan,
+      alamat: alamat,
+      no_hp: no_hp,
+      gol_darah: gol_darah,
+      no_bpjs: no_bpjs,
+      tempat_periksa: tempat_periksa,
       email: email,
       password: hashPassword,
       role: role,
@@ -77,7 +107,25 @@ export const updateUser = async (req, res) => {
     },
   });
   if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const { name, email, password, confPassword, role } = req.body;
+  const {
+    nama,
+    nik,
+    umur,
+    lama_nikah,
+    suku,
+    agama,
+    pendidikan,
+    pekerjaan,
+    alamat,
+    no_hp,
+    gol_darah,
+    no_bpjs,
+    tempat_periksa,
+    email,
+    password,
+    confPassword,
+    role,
+  } = req.body;
   let hashPassword;
   if (password === "" || password === null) {
     hashPassword = user.password;
@@ -91,10 +139,23 @@ export const updateUser = async (req, res) => {
   try {
     await User.update(
       {
-        name: name,
+        nama: nama,
+        nik: nik,
+        umur: umur,
+        lama_nikah: lama_nikah,
+        suku: suku,
+        agama: agama,
+        pendidikan: pendidikan,
+        pekerjaan: pekerjaan,
+        alamat: alamat,
+        no_hp: no_hp,
+        gol_darah: gol_darah,
+        no_bpjs: no_bpjs,
+        tempat_periksa: tempat_periksa,
         email: email,
         password: hashPassword,
         role: role,
+        adminId: req.adminId,
       },
       {
         where: {

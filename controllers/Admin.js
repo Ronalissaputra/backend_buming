@@ -4,7 +4,7 @@ import argon2 from "argon2";
 export const getAdmin = async (req, res) => {
   try {
     const response = await Admin.findAll({
-      attributes: ["uuid", "name", "email", "role"],
+      attributes: ["id", "uuid", "name", "email", "role"],
     });
     res.status(200).json(response);
   } catch (error) {

@@ -1,16 +1,16 @@
 import Product from "../models/ProductModel.js";
-import Admin from "../models/AdminModel.js";
+import Users from "../models/UserModel.js";
 import { Op } from "sequelize";
 
 export const getProducts = async (req, res) => {
   try {
     let response;
-    if (req.role === "admin2") {
+    if (req.role === "user") {
       response = await Product.findAll({
         attributes: ["uuid", "name", "price"],
         include: [
           {
-            model: Admin,
+            model: Users,
             attributes: ["name", "email"],
           },
         ],
@@ -19,11 +19,11 @@ export const getProducts = async (req, res) => {
       response = await Product.findAll({
         attributes: ["uuid", "name", "price"],
         where: {
-          adminId: req.adminId,
+          userId: req.userId,
         },
         include: [
           {
-            model: Admin,
+            model: Users,
             attributes: ["name", "email"],
           },
         ],
@@ -44,7 +44,7 @@ export const getProductById = async (req, res) => {
     });
     if (!product) return res.status(404).json({ msg: "Data tidak ditemukan" });
     let response;
-    if (req.role === "admin2") {
+    if (req.role === "user") {
       response = await Product.findOne({
         attributes: ["uuid", "name", "price"],
         where: {
@@ -52,7 +52,7 @@ export const getProductById = async (req, res) => {
         },
         include: [
           {
-            model: Admin,
+            model: Users,
             attributes: ["name", "email"],
           },
         ],
@@ -61,11 +61,11 @@ export const getProductById = async (req, res) => {
       response = await Product.findOne({
         attributes: ["uuid", "name", "price"],
         where: {
-          [Op.and]: [{ id: product.id }, { adminId: req.adminId }],
+          [Op.and]: [{ id: product.id }, { userId: req.userId }],
         },
         include: [
           {
-            model: Admin,
+            model: Users,
             attributes: ["name", "email"],
           },
         ],
@@ -83,7 +83,7 @@ export const createProduct = async (req, res) => {
     await Product.create({
       name: name,
       price: price,
-      adminId: req.adminId,
+      userId: req.userId,
     });
     res.status(201).json({ msg: "Product Created Successfuly" });
   } catch (error) {
@@ -100,7 +100,7 @@ export const updateProduct = async (req, res) => {
     });
     if (!product) return res.status(404).json({ msg: "Data tidak ditemukan" });
     const { name, price } = req.body;
-    if (req.role === "admin2") {
+    if (req.role === "user") {
       await Product.update(
         { name, price },
         {
@@ -110,13 +110,13 @@ export const updateProduct = async (req, res) => {
         }
       );
     } else {
-      if (req.adminId !== product.adminId)
+      if (req.userId !== product.userId)
         return res.status(403).json({ msg: "Akses terlarang" });
       await Product.update(
         { name, price },
         {
           where: {
-            [Op.and]: [{ id: product.id }, { adminId: req.adminId }],
+            [Op.and]: [{ id: product.id }, { userId: req.userId }],
           },
         }
       );
@@ -135,19 +135,18 @@ export const deleteProduct = async (req, res) => {
       },
     });
     if (!product) return res.status(404).json({ msg: "Data tidak ditemukan" });
-    const { name, price } = req.body;
-    if (req.role === "admin2") {
+    if (req.role === "user") {
       await Product.destroy({
         where: {
           id: product.id,
         },
       });
     } else {
-      if (req.adminId !== product.adminId)
+      if (req.userId !== product.userId)
         return res.status(403).json({ msg: "Akses terlarang" });
       await Product.destroy({
         where: {
-          [Op.and]: [{ id: product.id }, { adminId: req.adminId }],
+          [Op.and]: [{ id: product.id }, { userId: req.userId }],
         },
       });
     }

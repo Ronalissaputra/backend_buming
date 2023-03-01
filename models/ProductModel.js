@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Admin from "./AdminModel.js";
-
+import Users from "./UserModel.js";
 const { DataTypes } = Sequelize;
 
 const Products = db.define(
@@ -30,7 +29,7 @@ const Products = db.define(
         notEmpty: true,
       },
     },
-    adminId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -43,7 +42,7 @@ const Products = db.define(
   }
 );
 
-Admin.hasMany(Products);
-Products.belongsTo(Admin, { foreignKey: "adminId" });
+Users.hasMany(Products);
+Products.belongsTo(Users, { foreignKey: "userId" });
 
 export default Products;
