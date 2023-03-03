@@ -4,7 +4,17 @@ import argon2 from "argon2";
 export const getAdmin = async (req, res) => {
   try {
     const response = await Admin.findAll({
-      attributes: ["id", "uuid", "name", "email", "role"],
+      attributes: [
+        "id",
+        "uuid",
+        "nama",
+        "umur",
+        "prodi",
+        "semester",
+        "no_hp",
+        "email",
+        "role",
+      ],
     });
     res.status(200).json(response);
   } catch (error) {
@@ -15,7 +25,17 @@ export const getAdmin = async (req, res) => {
 export const getAdminById = async (req, res) => {
   try {
     const response = await Admin.findOne({
-      attributes: ["uuid", "name", "email", "role"],
+      attributes: [
+        "id",
+        "uuid",
+        "nama",
+        "umur",
+        "prodi",
+        "semester",
+        "no_hp",
+        "email",
+        "role",
+      ],
       where: {
         uuid: req.params.id,
       },
@@ -27,7 +47,18 @@ export const getAdminById = async (req, res) => {
 };
 
 export const createAdmin = async (req, res) => {
-  const { name, email, password, confPassword, role } = req.body;
+  const {
+    nama,
+    umur,
+    prodi,
+    semester,
+    no_hp,
+    alamat,
+    email,
+    password,
+    confPassword,
+    role,
+  } = req.body;
   if (password !== confPassword)
     return res
       .status(400)
@@ -35,7 +66,12 @@ export const createAdmin = async (req, res) => {
   const hashPassword = await argon2.hash(password);
   try {
     await Admin.create({
-      name: name,
+      nama: nama,
+      umur: umur,
+      prodi: prodi,
+      semester: semester,
+      no_hp: no_hp,
+      alamat: alamat,
       email: email,
       password: hashPassword,
       role: role,
@@ -53,7 +89,18 @@ export const updateAdmin = async (req, res) => {
     },
   });
   if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const { name, email, password, confPassword, role } = req.body;
+  const {
+    nama,
+    umur,
+    prodi,
+    semester,
+    no_hp,
+    alamat,
+    email,
+    password,
+    confPassword,
+    role,
+  } = req.body;
   let hashPassword;
   if (password === "" || password === null) {
     hashPassword = admin.password;
@@ -67,7 +114,12 @@ export const updateAdmin = async (req, res) => {
   try {
     await Admin.update(
       {
-        name: name,
+        nama: nama,
+        umur: umur,
+        prodi: prodi,
+        semester: semester,
+        no_hp: no_hp,
+        alamat: alamat,
         email: email,
         password: hashPassword,
         role: role,

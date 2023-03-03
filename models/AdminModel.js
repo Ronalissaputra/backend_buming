@@ -13,12 +13,47 @@ const Admin = db.define(
         notEmpty: true,
       },
     },
-    name: {
+    nama: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
         len: [3, 100],
+      },
+    },
+    umur: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    prodi: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    semester: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    no_hp: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    alamat: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
       },
     },
     email: {

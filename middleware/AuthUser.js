@@ -1,5 +1,4 @@
 import Admin from "../models/AdminModel.js";
-import Users from "../models/UserModel.js";
 
 export const verifyUser = async (req, res, next) => {
   if (!req.session.adminId) {
@@ -30,25 +29,13 @@ export const superAdminOnly = async (req, res, next) => {
 
 // ibu hamil
 export const adminOnly = async (req, res, next) => {
-  const admin = await Admin.findOne({
+  const admin = await Admin.findAll({
     where: {
       uuid: req.session.adminId,
     },
   });
   if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
   if (admin.role !== "admin")
-    return res.status(403).json({ msg: "Akses terlarang" });
-  next();
-};
-
-export const dminOnly = async (req, res, next) => {
-  const user = await Users.findOne({
-    where: {
-      uuid: req.session.userId,
-    },
-  });
-  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-  if (user.role !== "admin")
     return res.status(403).json({ msg: "Akses terlarang" });
   next();
 };

@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import SequelizeStore from "connect-session-sequelize";
 import db from "./config/Database.js";
 import AuthRouter from "./routes/AuthRouter.js";
-import UserRoute from "./routes/UserRoute.js";
+import IbuHamilRoute from "./routes/IbuHamilRoute.js";
 import AdminRoute from "./routes/AdminRoute.js";
 dotenv.config();
 
@@ -35,7 +35,7 @@ app.use(
 );
 app.use(express.json());
 app.use(AdminRoute);
-app.use(UserRoute);
+app.use(IbuHamilRoute);
 app.use(AuthRouter);
 
 app.listen(process.env.APP_PORT, () => {

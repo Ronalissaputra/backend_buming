@@ -3,9 +3,9 @@ import {
   loginAdmin,
   logOutAdmin,
   meAdmin,
-  loginUser,
-  meUser,
-  logoutUser,
+  loginIbuHamil,
+  meIbuHamil,
+  logoutIbuHamil,
 } from "../controllers/Auth.js";
 const router = express.Router();
 
@@ -14,8 +14,8 @@ router.post("/loginadmin", loginAdmin);
 router.delete("/logoutadmin", logOutAdmin);
 
 // login user
-// router.get("/meuser", meUser);
-// router.post("/loginuser", loginUser);
-// router.delete("/logoutuser", logoutUser);
+router.get("/meuser", meIbuHamil);
+router.post("/loginuser", loginIbuHamil);
+router.delete("/logoutuser", logoutIbuHamil);
 
 export default router;

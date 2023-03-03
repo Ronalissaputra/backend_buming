@@ -4,7 +4,7 @@ import Admin from "./AdminModel.js";
 const { DataTypes } = Sequelize;
 
 const Users = db.define(
-  "user",
+  "ibu_hamil",
   {
     uuid: {
       type: DataTypes.STRING,
@@ -14,7 +14,7 @@ const Users = db.define(
         notEmpty: true,
       },
     },
-    nama: {
+    nama_ibu: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -100,6 +100,62 @@ const Users = db.define(
       },
     },
     tempat_periksa: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    nama_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    umur_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    agama_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    suku_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    pendidikan_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    pekerjaan_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    alamat_suami: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    no_hpsuami: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
