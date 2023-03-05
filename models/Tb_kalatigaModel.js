@@ -1,190 +1,124 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
-import Admin from "./AdminModel.js";
+import IbuHamil from "./Tb_ibuhamilModel.js";
 const { DataTypes } = Sequelize;
 
-const Users = db.define(
-  "ibu_hamil",
+const Tb_kalatiga = db.define(
+  "tb_kalatiga",
   {
-    uuid: {
-      type: DataTypes.STRING,
-      defaultValue: DataTypes.UUIDV4,
+    lama_kalatiga: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    nama_ibu: {
-      type: DataTypes.STRING,
+    oksitosin_dlmwktu: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
-        len: [3, 100],
       },
     },
-    nik: {
+    peregangan_talipst: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    umur: {
+    mslh_fundusuteri: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    lama_nikah: {
+    pmbrian_ulngoksitosinygkedua: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    suku: {
+    alasan_pemberianulang: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    agama: {
+    plasenta_lahir_lengkp: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    pendidikan: {
+    plasenta_tdklahir: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    pekerjaan: {
+    tindakan_plasentatdklahir: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    alamat: {
+    laserasi: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    no_hp: {
+    laserasi_dmna: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    gol_darah: {
+    derajat_laserasi: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    no_bpjs: {
+    tindakan_laserasi: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    tempat_periksa: {
+    atonia_uteri: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    tindakan_atoniauteri: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    nama_suami: {
-      type: DataTypes.STRING,
+    jmlh_pendarahan: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    umur_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    agama_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    suku_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    pendidikan_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    pekerjaan_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    alamat_suami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    no_hpsuami: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    adminId: {
+    tbIbuhamilId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -197,7 +131,7 @@ const Users = db.define(
   }
 );
 
-Admin.hasMany(Users);
-Users.belongsTo(Admin, { foreignKey: "adminId" });
+IbuHamil.hasMany(Tb_kalatiga);
+Tb_kalatiga.belongsTo(IbuHamil, { foreignKey: "tbIbuhamilId" });
 
-export default Users;
+export default Tb_kalatiga;

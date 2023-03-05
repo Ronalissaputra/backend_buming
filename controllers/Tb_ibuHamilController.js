@@ -1,29 +1,29 @@
-import Admin from "../models/AdminModel.js";
-import IbuHamil from "../models/IbuHamilModel.js";
+import User from "../models/Tb_userModel.js";
+import Tb_ibuhamil from "../models/Tb_ibuhamilModel.js";
 import argon2 from "argon2";
 
 export const getIbuHamil = async (req, res) => {
   try {
     let response;
     if (req.role === "superadmin") {
-      response = await IbuHamil.findAll({
+      response = await Tb_ibuhamil.findAll({
         attributes: ["uuid", "nama_ibu", "email", "role"],
         include: [
           {
-            model: Admin,
+            model: User,
             attributes: ["nama", "email"],
           },
         ],
       });
     } else {
-      response = await IbuHamil.findAll({
+      response = await Tb_ibuhamil.findAll({
         attributes: ["uuid", "nama_ibu", "email", "role"],
         where: {
-          adminId: req.adminId,
+          tbUserId: req.tbUserId,
         },
         include: [
           {
-            model: Admin,
+            model: User,
             attributes: ["nama", "email"],
           },
         ],
@@ -37,7 +37,7 @@ export const getIbuHamil = async (req, res) => {
 
 export const getIbuHamilById = async (req, res) => {
   try {
-    const response = await IbuHamil.findOne({
+    const response = await Tb_ibuhamil.findOne({
       attributes: ["uuid", "nama", "email", "role"],
       where: {
         uuid: req.params.id,
@@ -83,7 +83,7 @@ export const createIbuHamil = async (req, res) => {
       .json({ msg: "Password dan Confirm Password tidak cocok" });
   const hashPassword = await argon2.hash(password);
   try {
-    await IbuHamil.create({
+    await Tb_ibuhamil.create({
       nama_ibu: nama_ibu,
       nik: nik,
       umur: umur,
@@ -108,7 +108,7 @@ export const createIbuHamil = async (req, res) => {
       email: email,
       password: hashPassword,
       role: role,
-      adminId: req.adminId,
+      tbUserId: req.tbUserId,
     });
     res.status(201).json({ msg: "Register Berhasil" });
   } catch (error) {
@@ -117,7 +117,7 @@ export const createIbuHamil = async (req, res) => {
 };
 
 export const updateIbuHamil = async (req, res) => {
-  const ibuhamil = await IbuHamil.findOne({
+  const ibuhamil = await Tb_ibuhamil.findOne({
     where: {
       uuid: req.params.id,
     },
@@ -161,9 +161,9 @@ export const updateIbuHamil = async (req, res) => {
       .status(400)
       .json({ msg: "Password dan Confirm Password tidak cocok" });
   try {
-    await IbuHamil.update(
+    await Tb_ibuhamil.update(
       {
-        nama: nama,
+        nama_ibu: nama_ibu,
         nik: nik,
         umur: umur,
         lama_nikah: lama_nikah,
@@ -187,7 +187,7 @@ export const updateIbuHamil = async (req, res) => {
         email: email,
         password: hashPassword,
         role: role,
-        adminId: req.adminId,
+        tbUserId: req.tbUserId,
       },
       {
         where: {
@@ -202,14 +202,14 @@ export const updateIbuHamil = async (req, res) => {
 };
 
 export const deleteIbuHamil = async (req, res) => {
-  const ibuhamil = await IbuHamil.findOne({
+  const ibuhamil = await Tb_ibuhamil.findOne({
     where: {
       uuid: req.params.id,
     },
   });
   if (!ibuhamil) return res.status(404).json({ msg: "User tidak ditemukan" });
   try {
-    await IbuHamil.destroy({
+    await Tb_ibuhamil.destroy({
       where: {
         id: ibuhamil.id,
       },

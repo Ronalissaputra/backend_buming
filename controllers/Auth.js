@@ -1,36 +1,36 @@
-import Admin from "../models/AdminModel.js";
-import IbuHamil from "../models/IbuHamilModel.js";
+import User from "../models/Tb_userModel.js";
+import Tb_ibuhamil from "../models/tb_IbuHamilModel.js";
 import argon2 from "argon2";
 
 export const loginAdmin = async (req, res) => {
-  const admin = await Admin.findOne({
+  const user = await User.findOne({
     where: {
       email: req.body.email,
     },
   });
-  if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
-  const match = await argon2.verify(admin.password, req.body.password);
+  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+  const match = await argon2.verify(user.password, req.body.password);
   if (!match) return res.status(400).json({ msg: "Password Tidak Sesuai" });
-  req.session.adminId = admin.uuid;
-  const uuid = admin.uuid;
-  const nama = admin.nama;
-  const umur = admin.umur;
-  const prodi = admin.prodi;
-  const semester = admin.semester;
-  const no_hp = admin.no_hp;
-  const alamat = admin.alamat;
-  const email = admin.email;
-  const role = admin.role;
+  req.session.tbUserId = user.uuid;
+  const uuid = user.uuid;
+  const nama = user.nama;
+  const umur = user.umur;
+  const prodi = user.prodi;
+  const semester = user.semester;
+  const no_hp = user.no_hp;
+  const alamat = user.alamat;
+  const email = user.email;
+  const role = user.role;
   res
     .status(200)
     .json({ uuid, nama, umur, prodi, semester, no_hp, alamat, email, role });
 };
 
 export const meAdmin = async (req, res) => {
-  if (!req.session.adminId) {
+  if (!req.session.tbUserId) {
     return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
   }
-  const admin = await Admin.findOne({
+  const user = await User.findOne({
     attributes: [
       "uuid",
       "nama",
@@ -43,11 +43,11 @@ export const meAdmin = async (req, res) => {
       "role",
     ],
     where: {
-      uuid: req.session.adminId,
+      uuid: req.session.tbUserId,
     },
   });
-  if (!admin) return res.status(404).json({ msg: "User tidak ditemukan" });
-  res.status(200).json(admin);
+  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+  res.status(200).json(user);
 };
 
 export const logOutAdmin = (req, res) => {
@@ -59,7 +59,7 @@ export const logOutAdmin = (req, res) => {
 
 // Login Ibu Hamil
 export const loginIbuHamil = async (req, res) => {
-  const ibuhamil = await IbuHamil.findOne({
+  const ibuhamil = await Tb_ibuhamil.findOne({
     where: {
       email: req.body.email,
     },
@@ -67,22 +67,22 @@ export const loginIbuHamil = async (req, res) => {
   if (!ibuhamil) return res.status(404).json({ msg: "User tidak ditemukan" });
   const match = await argon2.verify(ibuhamil.password, req.body.password);
   if (!match) return res.status(400).json({ msg: "Wrong Password" });
-  req.session.ibuhamilId = ibuhamil.uuid;
+  req.session.tbIbuhamilId = ibuhamil.uuid;
   const uuid = ibuhamil.uuid;
-  const nama = ibuhamil.nama;
+  const nama_ibu = ibuhamil.nama_ibu;
   const email = ibuhamil.email;
   const role = ibuhamil.role;
-  res.status(200).json({ uuid, nama, email, role });
+  res.status(200).json({ uuid, nama_ibu, email, role });
 };
 
 export const meIbuHamil = async (req, res) => {
-  if (!req.session.ibuhamilId) {
+  if (!req.session.tbIbuhamilId) {
     return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
   }
-  const ibuhamil = await IbuHamil.findOne({
-    attributes: ["uuid", "nama", "email", "role"],
+  const ibuhamil = await Tb_ibuhamil.findOne({
+    attributes: ["uuid", "nama_ibu", "email", "role"],
     where: {
-      uuid: req.session.ibuhamilId,
+      uuid: req.session.tbIbuhamilId,
     },
   });
   if (!ibuhamil) return res.status(404).json({ msg: "User tidak ditemukan" });

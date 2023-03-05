@@ -1,78 +1,62 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import IbuHamil from "./Tb_ibuhamilModel.js";
 const { DataTypes } = Sequelize;
 
-const Admin = db.define(
-  "admin",
+const Tb_idntsreproduksi = db.define(
+  "tb_idntsreproduksi",
   {
-    uuid: {
-      type: DataTypes.STRING,
-      defaultValue: DataTypes.UUIDV4,
+    hamil_ke: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    nama: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [3, 100],
-      },
-    },
-    umur: {
-      type: DataTypes.STRING,
+    jumlah_anak: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    prodi: {
-      type: DataTypes.STRING,
+    siklus_mens: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    semester: {
-      type: DataTypes.STRING,
+    lamanya_mens: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    no_hp: {
-      type: DataTypes.STRING,
+    hpht: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    alamat: {
-      type: DataTypes.STRING,
+    hpl: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
+    riwayat_komplikasi: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    role: {
-      type: DataTypes.STRING,
+    tbIbuhamilId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -84,4 +68,7 @@ const Admin = db.define(
   }
 );
 
-export default Admin;
+IbuHamil.hasMany(Tb_idntsreproduksi);
+Tb_idntsreproduksi.belongsTo(IbuHamil, { foreignKey: "tbIbuhamilId" });
+
+export default Tb_idntsreproduksi;

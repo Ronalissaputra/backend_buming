@@ -6,7 +6,7 @@ import {
   createIbuHamil,
   updateIbuHamil,
   deleteIbuHamil,
-} from "../controllers/IbuHamil.js";
+} from "../controllers/Tb_ibuHamilController.js";
 
 const router = express.Router();
 
