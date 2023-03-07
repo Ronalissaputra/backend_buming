@@ -4,6 +4,6 @@ import { getBayiLahir } from "../controllers/Tb_bayilahirController.js";
 
 const router = express.Router();
 
-router.get("/bayi", verifyUser, getBayiLahir);
+router.get("/bayilahir", verifyUser, getBayiLahir);
 
 export default router;

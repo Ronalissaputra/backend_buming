@@ -1,5 +1,6 @@
 import User from "../models/Tb_userModel.js";
 import Tb_ibuhamil from "../models/Tb_ibuhamilModel.js";
+import Tb_bayi from "../models/Tb_bayiModel.js";
 import argon2 from "argon2";
 
 export const getIbuHamil = async (req, res) => {
@@ -7,17 +8,45 @@ export const getIbuHamil = async (req, res) => {
     let response;
     if (req.role === "superadmin") {
       response = await Tb_ibuhamil.findAll({
-        attributes: ["uuid", "nama_ibu", "email", "role"],
+        attributes: ["uuid", "nama_ibu", "email", "nama_suami", "role"],
         include: [
           {
             model: User,
             attributes: ["nama", "email"],
           },
+          {
+            model: Tb_bayi,
+            attributes: ["nama_bayi", "jenis_klamin"],
+          },
         ],
       });
     } else {
       response = await Tb_ibuhamil.findAll({
-        attributes: ["uuid", "nama_ibu", "email", "role"],
+        attributes: [
+          "uuid",
+          "nama_ibu",
+          "nik",
+          "umur",
+          "lama_nikah",
+          "suku",
+          "agama",
+          "pendidikan",
+          "pekerjaan",
+          "alamat",
+          "no_hp",
+          "gol_darah",
+          "no_bpjs",
+          "tempat_periksa",
+          "nama_suami",
+          "umur_suami",
+          "agama_suami",
+          "suku_suami",
+          "pendidikan_suami",
+          "pekerjaan_suami",
+          "alamat_suami",
+          "no_hpsuami",
+          "email",
+        ],
         where: {
           tbUserId: req.tbUserId,
         },
@@ -25,6 +54,10 @@ export const getIbuHamil = async (req, res) => {
           {
             model: User,
             attributes: ["nama", "email"],
+          },
+          {
+            model: Tb_bayi,
+            attributes: ["nama_bayi", "jenis_klamin"],
           },
         ],
       });
@@ -38,10 +71,44 @@ export const getIbuHamil = async (req, res) => {
 export const getIbuHamilById = async (req, res) => {
   try {
     const response = await Tb_ibuhamil.findOne({
-      attributes: ["uuid", "nama", "email", "role"],
+      attributes: [
+        "uuid",
+        "nama_ibu",
+        "nik",
+        "umur",
+        "lama_nikah",
+        "suku",
+        "agama",
+        "pendidikan",
+        "pekerjaan",
+        "alamat",
+        "no_hp",
+        "gol_darah",
+        "no_bpjs",
+        "tempat_periksa",
+        "nama_suami",
+        "umur_suami",
+        "agama_suami",
+        "suku_suami",
+        "pendidikan_suami",
+        "pekerjaan_suami",
+        "alamat_suami",
+        "no_hpsuami",
+        "email",
+      ],
       where: {
         uuid: req.params.id,
       },
+      include: [
+        {
+          model: User,
+          attributes: ["nama", "email"],
+        },
+        {
+          model: Tb_bayi,
+          attributes: ["nama_bayi", "jenis_klamin", "tnggl_lahir", "anak_ke"],
+        },
+      ],
     });
     res.status(200).json(response);
   } catch (error) {

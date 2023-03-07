@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import IbuHamil from "./Tb_ibuhamilModel.js";
+import User from "./Tb_userModel.js";
 const { DataTypes } = Sequelize;
 
 const Tb_bayi = db.define(
@@ -41,6 +42,13 @@ const Tb_bayi = db.define(
         notEmpty: true,
       },
     },
+    tbUserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
   },
   {
     freezeTableName: true,
@@ -49,5 +57,8 @@ const Tb_bayi = db.define(
 
 IbuHamil.hasMany(Tb_bayi);
 Tb_bayi.belongsTo(IbuHamil, { foreignKey: "tbIbuhamilId" });
+
+User.hasMany(Tb_bayi);
+Tb_bayi.belongsTo(User, { foreignKey: "tbUserId" });
 
 export default Tb_bayi;

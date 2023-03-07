@@ -6,7 +6,13 @@ export const getBayiLahir = async (req, res) => {
     let response;
     if (req.role === "superadmin") {
       response = await Tb_bayilahir.findAll({
-        attributes: ["keadaan_umum", "kesadaran", "kondisi_saatlahir"],
+        attributes: [
+          "nama_bayi",
+          "jenis_klamin",
+          "tnggl_lahir",
+          "anak_ke",
+          "tbIbuhamilId",
+        ],
         include: [
           {
             model: Tb_ibuhamil,
@@ -16,10 +22,13 @@ export const getBayiLahir = async (req, res) => {
       });
     } else {
       response = await Tb_bayilahir.findAll({
-        attributes: ["keadaan_umum", "kesadaran", "kondisi_saatlahir"],
-        where: {
-          ibuhamilId: req.ibuhamilId,
-        },
+        attributes: [
+          "nama_bayi",
+          "jenis_klamin",
+          "tnggl_lahir",
+          "anak_ke",
+          "tbIbuhamilId",
+        ],
         include: [
           {
             model: Tb_ibuhamil,
@@ -33,20 +42,6 @@ export const getBayiLahir = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
-// export const getIbuHamilById = async (req, res) => {
-//   try {
-//     const response = await IbuHamil.findOne({
-//       attributes: ["uuid", "nama", "email", "role"],
-//       where: {
-//         uuid: req.params.id,
-//       },
-//     });
-//     res.status(200).json(response);
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
 
 // export const createIbuHamil = async (req, res) => {
 //   const {
